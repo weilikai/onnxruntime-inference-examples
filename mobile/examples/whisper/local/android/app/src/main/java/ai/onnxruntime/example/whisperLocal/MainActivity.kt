@@ -9,6 +9,10 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import java.io.FileOutputStream
+import java.io.ObjectOutputStream
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -129,9 +133,14 @@ class MainActivity : AppCompatActivity() {
                         stopRecordingAudioButton.isEnabled = true
                     }
 
-                    val audioTensor = AudioTensorSource.fromRecording(stopRecordingFlag)
-                    val result = audioTensor.use { speechRecognizer.run(audioTensor) }
-                    setSuccessfulResult(result)
+                    val tasks = AudioTensorSource.fromRecording(applicationContext, stopRecordingFlag)
+                    for (audioTensor in tasks) {
+                        if (stopRecordingFlag.get()) {
+                            break
+                        }
+                        val result = speechRecognizer.run(audioTensor)
+                        setSuccessfulResult(result)
+                    }
                 } catch (e: Exception) {
                     setError(e)
                 } finally {
