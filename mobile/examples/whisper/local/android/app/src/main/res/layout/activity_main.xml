@@ -6,15 +6,12 @@
     android:layout_height="match_parent"
     tools:context="ai.onnxruntime.example.whisperLocal.MainActivity">
 
-    <ImageView
-        android:id="@+id/logo_image_view"
-        android:layout_width="320dp"
-        android:layout_height="108dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/onnx_runtime_logo" />
+    <ai.onnxruntime.example.whisperLocal.SpectrumView
+        android:id="@+id/spectrumView"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="2dp" />
 
     <TextView
         android:id="@+id/info_text"
@@ -28,7 +25,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo_image_view" />
+        app:layout_constraintTop_toBottomOf="@+id/spectrumView" />
 
     <Button
         android:id="@+id/use_prerecorded_audio_button"

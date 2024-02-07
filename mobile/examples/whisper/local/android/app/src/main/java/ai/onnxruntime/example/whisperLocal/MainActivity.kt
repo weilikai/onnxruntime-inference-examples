@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     private val resultText: TextView by lazy { findViewById(R.id.result_text) }
     private val statusText: TextView by lazy { findViewById(R.id.status_text) }
+    private val spectrumView: SpectrumView by lazy { findViewById(R.id.spectrumView) }
 
     private val speechRecognizer: SpeechRecognizer by lazy {
         resources.openRawResource(R.raw.whisper_cpu_int8_model).use {
@@ -37,12 +38,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun setSuccessfulResult(result: SpeechRecognizer.Result) {
         runOnUiThread {
-            statusText.text = "Successful speech recognition (${result.inferenceTimeInMs} ms)"
-            resultText.text = result.text.ifEmpty { "<No speech detected.>" }
+            statusText.text = "识别耗时: (${result.inferenceTimeInMs} ms)"
+            resultText.text = result.text.ifEmpty { "识别失败：<No speech detected.>" }
         }
     }
 
-    private fun setError(exception: Exception) {
+    private fun setError(exception: Error) {
         Log.e(TAG, "Error: ${exception.localizedMessage}", exception)
         runOnUiThread {
             statusText.text = "Error"
@@ -100,12 +101,13 @@ class MainActivity : AppCompatActivity() {
 
             workerThreadExecutor.submit {
                 try {
-                    val audioTensor = resources.openRawResource(R.raw.audio_mono_16khz_f32le).use {
-                        AudioTensorSource.fromRawPcmBytes(it.readBytes())
-                    }
-                    val result = audioTensor.use { speechRecognizer.run(audioTensor) }
-                    setSuccessfulResult(result)
-                } catch (e: Exception) {
+                    spectrumView.loadWav(openFileInput("debug.wav"))
+//                    val audioTensor = resources.openRawResource(R.raw.audio_mono_16khz_f32le).use {
+//                        AudioTensorSource.fromRawPcmBytes(it.readBytes())
+//                    }
+//                    val result = audioTensor.use { speechRecognizer.run(audioTensor) }
+//                    setSuccessfulResult(result)
+                } catch (e: Error) {
                     setError(e)
                 } finally {
                     resetDefaultAudioButtonState()
@@ -138,10 +140,11 @@ class MainActivity : AppCompatActivity() {
                         if (stopRecordingFlag.get()) {
                             break
                         }
+                        spectrumView.loadWav(openFileInput("debug.wav"))
                         val result = speechRecognizer.run(audioTensor)
                         setSuccessfulResult(result)
                     }
-                } catch (e: Exception) {
+                } catch (e: Error) {
                     setError(e)
                 } finally {
                     resetDefaultAudioButtonState()

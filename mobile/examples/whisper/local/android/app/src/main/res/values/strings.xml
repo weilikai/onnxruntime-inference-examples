@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Speech Recognition</string>
-    <string name="use_prerecorded_audio">Use Prerecorded Audio</string>
-    <string name="record">Record</string>
-    <string name="stop">Stop</string>
-    <string name="instructions">Press a button to provide audio input and then the recognized speech will be displayed.\nThe maximum recording length is 30 seconds.</string>
+    <string name="use_prerecorded_audio">文件识别</string>
+    <string name="record">开始</string>
+    <string name="stop">停止</string>
+    <string name="instructions">点击开始录音后说话即可自动开始识别，每句话的识别结果将显示于下放文本框，并与上方区域显示频谱图</string>
 </resources>
